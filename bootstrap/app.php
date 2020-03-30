@@ -71,7 +71,7 @@ $app->configure('app');
 | route or middleware that'll be assigned to some specific routes.
 |
 */
-
+//test
 // $app->middleware([
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
