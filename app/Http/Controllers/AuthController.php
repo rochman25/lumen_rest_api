@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
 
     public function register(Request $request){
         $this->validate($request,[
-            'username' => 'required|required',
+            'username' => 'required|string|unique:users',
             'password' => 'required|confirmed'
         ]);
 
@@ -34,6 +35,23 @@ class AuthController extends Controller
         }catch(\Exception $e){
             return response()->json(['message' => 'user registration failed!'],409);
         }
+
+    }
+
+    public function login(Request $request){
+        $this->validate($request, [
+            'username' => 'required|string',
+            'password' => 'required|string' 
+        ]);
+
+        $credentials = $request->only(['username','password']);
+
+        if(!$token = Auth::attempt($credentials)){
+            return response()->json(['message' => 'Unauthorized'],401);
+        }
+        $data['user'] = User::where('username',$request->input('username'))->first();
+        $data['token'] = $token;
+        return $this->respondWithToken($data);
 
     }
 

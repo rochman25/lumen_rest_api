@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\BookModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -15,6 +16,7 @@ class BookController extends Controller
     public function __construct()
     {
         //
+        $this->middleware('auth');
     }
 
     function index()
